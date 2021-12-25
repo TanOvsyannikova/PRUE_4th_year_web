@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+
+<body>
+    <div id="react-root"></div>
+    <script type="text/babel">
+
+        const Child1 = (props) => <h1>Child1</h1>;
+        const Child2 = (props) => <h1>Child2</h1>;
+        const Child3 = (props) => <h1>Child3</h1>;
+
+        class Parent extends React.Component {
+
+            constructor(props) {
+                super(props);
+                this.state = {
+                    childNo: 1
+                };
+            }
+
+            handleButtonClick(e) {
+                if (location.hash === '#child1') location.hash = '#child2';
+                else if (location.hash === '#child2') location.hash = '#child3';
+                else location.hash = '#child1'
+                this.forceUpdate();
+            }
+
+            render() {
+                console.log('location.search:', location.search, 'location.hash:', location.hash);
+                return (
+                    <div>
+                        <button onClick={this.handleButtonClick.bind(this)} >Switch</button>
+                        {
+                            location.hash === '#child1'
+                                ? <Child1 />
+                                : location.hash === '#child2'
+                                    ? <Child2 />
+                                    : location.hash === '#child3'
+                                        ? <Child3 />
+                                        : <div>Not found</div>
+                        }
+                    </div>
+                );
+            }
+
+        }
+        ReactDOM.render(
+            <Parent />,
+            document.getElementById("react-root")
+        );
+
+    </script>
+</body>
